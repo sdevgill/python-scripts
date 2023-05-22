@@ -1,6 +1,6 @@
-import os
 import subprocess
 import sys
+from pathlib import Path
 
 
 def get_media_file_duration(file_path):
@@ -30,15 +30,12 @@ def get_total_duration(directory):
     """
     Returns the total duration of all media files in a directory.
     """
-    total_duration = 0
-
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            if file.lower().endswith((".mp3", ".mp4", ".m4a", ".wav")):
-                file_path = os.path.join(root, file)
-                duration = get_media_file_duration(file_path)
-                total_duration += duration
-
+    media_files = (
+        f
+        for f in directory.glob("**/*")
+        if f.suffix.lower() in (".mp3", ".mp4", ".m4a", ".wav")
+    )
+    total_duration = sum(get_media_file_duration(str(file)) for file in media_files)
     return total_duration
 
 
@@ -46,9 +43,9 @@ def validate_directory_path(directory_path):
     """
     Validates the directory path provided as a command-line argument.
     """
-    if not os.path.isdir(directory_path):
+    if not Path(directory_path).is_dir():
         print("Invalid directory path.")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 def validate_command_line_arguments():
@@ -57,7 +54,7 @@ def validate_command_line_arguments():
     """
     if len(sys.argv) < 2:
         print("Please provide the path to the directory.")
-        sys.exit(1)
+        raise SystemExit(1)
 
 
 # Validate the command-line arguments
@@ -70,7 +67,8 @@ directory_path = sys.argv[1]
 validate_directory_path(directory_path)
 
 # Get the total duration of all media files in the directory
-total_duration = get_total_duration(directory_path)
+directory = Path(directory_path)
+total_duration = get_total_duration(directory)
 
 # Convert the total duration to hours, minutes, and seconds
 hours = int(total_duration / 3600)
