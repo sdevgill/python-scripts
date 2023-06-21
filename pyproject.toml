@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "python-scripts"
+version = "0.1.0"
+description = "Just some Python scripts"
+authors = ["Dev Gill <26435947+sdevgill@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "python_scripts"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+beautifulsoup4 = "^4.12.2"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
