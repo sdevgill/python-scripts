@@ -33,7 +33,7 @@ def get_total_duration(directory):
     media_files = (
         f
         for f in directory.glob("**/*")
-        if f.suffix.lower() in (".mp3", ".mp4", ".m4a", ".wav")
+        if f.suffix.lower() in (".mp3", ".mp4", ".m4a", ".wav", ".m4v")
     )
     total_duration = sum(get_media_file_duration(file) for file in media_files)
     return total_duration
